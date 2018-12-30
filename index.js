@@ -57,6 +57,11 @@ app.get('/token', (req, res) => {
     return;
   }
 
+  if (!presence[domain]) {
+    res.status(500).send(`presence.${domain} is null. Should not happen.`);
+    return;
+  }
+
   // Find available user
   const user = pool.users.find(user => presence[domain][user.userId] !== 'BUSY');
   res.json({token: user && user.token});
@@ -104,10 +109,13 @@ async function init(domain) {
   webhookSubscriptions[res.id] = domain;
 
   // Get current presence state
-  res = await fetch(`https://${domain}/rest/users/presence?userIds=${userIds.join(',')}`, {
+  const url = `https://${domain}/rest/users/presence?userIds=${userIds.join(',')}`;
+  res = await fetch(url, {
     headers: { 'Authorization': 'Bearer ' + token }
   });
   res = await res.json();
+
+  console.log(`Result for GET ${url}:`. res);
   presence[domain] = {};
   res.forEach(u => presence[domain][u.userId] = u.state);
 }
