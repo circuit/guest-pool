@@ -51,7 +51,7 @@ app.get('/token', (req, res) => {
   }
 
   // Look up pool for clientId
-  const pool = config[domain].pools.find(p => p.clientId === clientId);
+  const pool = config.domains[domain].pools.find(p => p.clientId === clientId);
   if (!pool) {
     res.status(500).send(`no pool found for clientId ${clientId}`);
     return;
@@ -62,11 +62,11 @@ app.get('/token', (req, res) => {
   res.json({token: user && user.token});
 });
 
-app.listen(PORT, () => console.log('App listening on: ', PORT));
+app.listen(PORT, () => console.log(`App listening on: ${HOST}:${PORT}`));
 
 
 async function init(domain) {
-  const {credentials: cred, pools} = config[domain];
+  const {credentials: cred, pools} = config.domains[domain];
 
   const oauth2 = simpleOauth2.create({
     client: {
@@ -114,7 +114,7 @@ async function init(domain) {
 
 (async () => {
   try {
-    for (let domain of Object.keys(config)) {
+    for (let domain of Object.keys(config.domains)) {
       await init(domain);
     }
   } catch (err) {
