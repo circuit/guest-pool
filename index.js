@@ -58,7 +58,7 @@ app.get('/token', (req, res) => {
   }
 
   // Find available user
-  const user = pool.users.find(user => presence[domain][user.userId] === 'AVAILABLE' || presence[domain][user.userId] === 'AWAY');
+  const user = pool.users.find(user => presence[domain][user.userId] !== 'BUSY');
   res.json({token: user && user.token});
 });
 
