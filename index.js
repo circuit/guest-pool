@@ -7,8 +7,8 @@ const config = require('./config.json');
 const app = express();
 app.use(express.json());
 
-const HOST = process.env.host || 'http://30879247.ngrok.io';
-const PORT = process.env.port || 8080;
+const HOST = process.env.host || config.host;
+const PORT = process.env.port || config.port || 8080;
 const HOOK_URL = '/webhook2';
 
 const webhookSubscriptions = {};
