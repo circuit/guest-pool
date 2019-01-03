@@ -1,20 +1,25 @@
 {
-  "circuitsandbox.net": {
-    "credentials": {
-      "clientId": "<client id for this client credentials app>",
-      "clientSecret": "<client secret for this client credentials app>"
-    },
-    "pools": [{
-      "clientId": "<client id for the app 1 using this service>",
-      "users": [{
-        "email": "<email of circuit pool user 1>",
-        "userId": "<userId of circuit pool user 1>",
-        "token": "<access token of circuit pool user 1>"
-      }, {
-        "email": "<email of circuit pool user 2>",
-        "userId": "<userId of circuit pool user 2>",
-        "token": "<access token of circuit pool user 2>"
+  "host": "https://guest-pool-tokens.appspot.com",
+  "domains": {
+    "circuitsandbox.net": {
+      "credentials": {
+        "clientId": "<client_id for this app>",
+        "clientSecret": "<client_secret for this app>"
+      },
+      "pools": [{
+        "clientId": "<client_id for IMPLICIT web app used as key for pool>",
+        "users": [{
+          "email": "<email of this pool user>",
+          "password": "<password of this pool user>",
+          "clientId": "<client_id for RESOURCE_OWNER grant type of this pool user>",
+          "userId": "<userId of this pool user>"
+        }, {
+          "email": "<email of this pool user>",
+          "password": "<password of this pool user>",
+          "clientId": "<client_id for RESOURCE_OWNER grant type of this pool user>",
+          "userId": "<userId of this pool user>"
+        }]
       }]
-    }]
+    }
   }
 }

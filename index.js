@@ -1,6 +1,7 @@
 'use strict';
 const fetch = require('node-fetch');
 const express = require('express');
+const btoa = require('btoa');
 const simpleOauth2 = require('simple-oauth2');
 const config = require('./config.json');
 
@@ -58,13 +59,17 @@ app.get('/token', (req, res) => {
   }
 
   if (!presence[domain]) {
-    res.status(500).send(`presence.${domain} is null. Should not happen.`);
+    res.status(500).send(`presence[${domain}] is null. Should not happen.`);
     return;
   }
 
   // Find available user
   const user = pool.users.find(user => presence[domain][user.userId] !== 'BUSY');
-  res.json({token: user && user.token});
+  if (!user) {
+    res.status(500).send(`No available user found`);
+    return;
+  }
+  res.json({token: btoa(`${user.email}:${user.password}:${user.clientId}`)});
 });
 
 app.listen(PORT, () => console.log(`App listening on: ${HOST}:${PORT}`));
@@ -118,6 +123,8 @@ async function init(domain) {
   console.log(`Result for GET ${url}:`. res);
   presence[domain] = {};
   res.forEach(u => presence[domain][u.userId] = u.state);
+  console.log(`presence map initialized for domain ${domain}:`, presence[domain]);
+
 }
 
 (async () => {
