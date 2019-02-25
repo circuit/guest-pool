@@ -36,7 +36,8 @@ app.post(HOOK_URL, (req, res) => {
   const domain = webhookSubscriptions[req.body.webhookId];
   if (!domain) {
     console.error('Domain not found in webhookSubscriptions');
-    res.send(200);
+    res.sendStatus(200);
+    return;
   }
 
   const {userId, state} = req.body.presenceState;
@@ -50,7 +51,7 @@ app.post(HOOK_URL, (req, res) => {
   presence[domain][userId] = state;
   console.log(`Updated presence map for domain ${domain}:`, presence[domain]);
 
-  res.send(200);
+  res.sendStatus(200);
 });
 
 app.get('/token', (req, res) => {
@@ -130,6 +131,7 @@ async function init(domain) {
 
   // Get current presence state
   const url = `https://${domain}/rest/users/presence?userIds=${userIds.join(',')}`;
+  console.log('Send request: ' + url);
   res = await fetch(url, {
     headers: { 'Authorization': 'Bearer ' + token }
   });
