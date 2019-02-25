@@ -35,6 +35,10 @@ app.post(HOOK_URL, (req, res) => {
   const domain = webhookSubscriptions[req.body.webhookId];
   const {userId, state} = req.body.presenceState;
 
+  if (!presence[domain]) {
+    presence[domain] = {};
+  }
+
   console.log(`State change for ${userId} from ${presence[domain][userId]} to ${state}`);
   presence[domain][userId] = state;
 });
