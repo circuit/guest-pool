@@ -32,7 +32,6 @@ app.use((req, res, next) => {
 });
 
 app.post(HOOK_URL, (req, res) => {
-  console.log('webhookSubscriptions:', webhookSubscriptions);
   const domain = webhookSubscriptions[req.body.webhookId];
   if (!domain) {
     console.error('Domain not found in webhookSubscriptions');
@@ -137,7 +136,7 @@ async function init(domain) {
   });
   res = await res.json();
 
-  console.log(`Result for GET ${url}:`. res);
+  console.log(`Result for GET ${url}:`, res);
   presence[domain] = {};
   res.forEach(u => presence[domain][u.userId] = u.state);
   console.log(`presence map initialized for domain ${domain}:`, presence[domain]);
