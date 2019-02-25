@@ -128,7 +128,6 @@ async function init(domain) {
   presence[domain] = {};
   res.forEach(u => presence[domain][u.userId] = u.state);
   console.log(`presence map initialized for domain ${domain}:`, presence[domain]);
-
 }
 
 (async () => {
@@ -137,6 +136,6 @@ async function init(domain) {
       await init(domain);
     }
   } catch (err) {
-    console.error(err);
+    console.error('Error', err);
   }
 })();
