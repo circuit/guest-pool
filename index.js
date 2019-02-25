@@ -34,6 +34,11 @@ app.use((req, res, next) => {
 app.post(HOOK_URL, (req, res) => {
   console.log('webhookSubscriptions:', webhookSubscriptions);
   const domain = webhookSubscriptions[req.body.webhookId];
+  if (!domain) {
+    console.error('Domain not found in webhookSubscriptions');
+    res.send(200);
+  }
+
   const {userId, state} = req.body.presenceState;
 
   if (!presence[domain]) {
@@ -44,6 +49,8 @@ app.post(HOOK_URL, (req, res) => {
   console.log(`State change for ${userId} from ${presence[domain][userId]} to ${state}`);
   presence[domain][userId] = state;
   console.log(`Updated presence map for domain ${domain}:`, presence[domain]);
+
+  res.send(200);
 });
 
 app.get('/token', (req, res) => {
