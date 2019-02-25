@@ -32,6 +32,7 @@ app.use((req, res, next) => {
 });
 
 app.post(HOOK_URL, (req, res) => {
+  console.log('webhookSubscriptions:', webhookSubscriptions);
   const domain = webhookSubscriptions[req.body.webhookId];
   const {userId, state} = req.body.presenceState;
 
@@ -118,6 +119,7 @@ async function init(domain) {
   });
   res = await res.json();
   webhookSubscriptions[res.id] = domain;
+  console.log('Add new domain to subscriptions: ' + domain, webhookSubscriptions);
 
   // Get current presence state
   const url = `https://${domain}/rest/users/presence?userIds=${userIds.join(',')}`;
