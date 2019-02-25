@@ -37,10 +37,12 @@ app.post(HOOK_URL, (req, res) => {
 
   if (!presence[domain]) {
     presence[domain] = {};
+    console.warn('initialize presence[domain]. Should have already been initialized.');
   }
 
   console.log(`State change for ${userId} from ${presence[domain][userId]} to ${state}`);
   presence[domain][userId] = state;
+  console.log(`Updated presence map for domain ${domain}:`, presence[domain]);
 });
 
 app.get('/token', (req, res) => {
