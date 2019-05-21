@@ -3,7 +3,7 @@
   "domains": {
     "circuitsandbox.net": {
       "credentials": {
-        "clientId": "<client_id for this app>",
+        "clientId": "<client_id for this CLIENT_CREDENTIALS app>",
         "clientSecret": "<client_secret for this app>"
       },
       "pools": [{
